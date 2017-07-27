@@ -2,7 +2,7 @@
 
 Yleisiä linkkejä:
 
-* [Linkki sovellukseeni](https://www.cs.helsinki.fi)
+* [Linkki sovellukseeni](http://koxantti.users.cs.helsinki.fi/KeskusteluFoorumi/)
 * [Linkki dokumentaatiooni](https://github.com/akoivu/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
 ## Työn aihe
