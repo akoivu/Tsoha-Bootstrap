@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h1>Viestialueen aihe lukee tässä näin</h1>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Viesti</th>
+                <th>Nimimerkki</th>
+                <th>Tägit</th>
+                <th></th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <tr>
+                <td>Söin aamulla hyvää puuroa nam nam. Sen jälkeen oli hyvä mieli ja aloin tekemään foorumia. Foorumi kaipasi esimerkkiviestiä joten kirjoitin sellaisen. Sitten menin nukkumaan. Hyvää yötä.</td>
+                <td><a>Foorumin käyttäjähenkilö</a></td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li><a>Asiaton</a></li>
+                        <li><a>Turha</a></li>
+                    </ul>
+                </td>
+                <td><button class="btn btn-default">Muokkaa viestiä</button><button class="btn btn-danger">Poista viesti</button><button class="btn btn-default">Lisää tägi</button></td>
+            </tr>
+            <tr>
+                <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae imperdiet eros. Cras leo mauris, vestibulum sed tincidunt vitae, porttitor quis est. Ut quis nibh magna. Morbi eget semper enim. Morbi nec dui bibendum, efficitur urna et, consectetur orci. Curabitur quis justo sagittis, tincidunt purus quis, aliquam lectus. Morbi sit amet dui mauris. Suspendisse eu laoreet eros. Phasellus vel mattis nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque fermentum enim id orci dictum, in efficitur neque bibendum. Nulla suscipit vehicula vestibulum. Curabitur condimentum augue nec turpis aliquam malesuada.</td>
+                <td><a>Abraham Lincoln</a></td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li><a>Hyödyllinen</a></li>
+                        <li><a>Syvällinen</a></li>
+                    </ul>
+                </td>
+                <td><button class="btn btn-default">Muokkaa viestiä</button><button class="btn btn-danger">Poista viesti</button><button class="btn btn-default">Lisää tägi</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>Uusi viesti</h2>
+    
+    <form>
+        <div>
+            <textarea class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Lähetä viesti</button>
+    </form>
+{% endblock %}
