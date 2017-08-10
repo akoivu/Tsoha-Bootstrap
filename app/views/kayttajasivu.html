@@ -1,25 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
     
-    <h1>Abraham Lincoln</h1>
+    <h1>{{kayttaja.nimi}}</h1>
     
     <dl>
         <dt>Lempiväri</dt>
-        <dd>Punainen</dd>
-        <dt>Liittymispäivä</dt>
-        <dd>29.8.2016</dd>
+        <dd>{{kayttaja.lempivari}}</dd>
+        <dt>Liittymisaika</dt>
+        <dd>{{kayttaja.liittymispaiva}}</dd>
+        <dt>Esittelyteksti</dt>
+        <dd>{{kayttaja.esittelyteksti}}</dd>
     </dl>
-    <h2>Käyttäjän Abraham Lincoln viestit</h2>
+    <h2>Käyttäjän {{kayttaja.nimi}} viestit</h2>
     <table class="table table-striped">
         <tbody>
-            <tr>
-                <td><a href="hiekkalaatikko">Lempivärini on punainen</a></td>
-            </tr>
-            <tr>
-                <td><a href="tietokantayhteys">Lempivärini ei ole vihreä</a></td>
-            </tr>
+            {% for viesti in viestit %}
+                <tr>
+                    <td>{{viesti.sisalto}}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
     
-    <a href="">Muokkaa käyttäjätietoja</a>
+    <a href="{{base_path}}/kayttajat/{{kayttaja.kayttajaId}}/muokkaus">Muokkaa käyttäjätietoja</a>
 {% endblock %}

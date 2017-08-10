@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Hakutulokset hakusanalla: lempiväri</h1>
+    <h1>Hakutulokset hakusanalla: {{hakusana}}</h1>
     <h2>Viestit</h2>
     <table class="table table-striped">
         <thead>
@@ -8,41 +8,59 @@
                 <th>Viesti</th>
                 <th>Nimimerkki</th>
                 <th>Tägit</th>
-                <th></th>
+                <th>Keskustelualue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for viesti in viestit %}
+                <tr>
+                    <td>{{viesti.sisalto}}</td>
+                    <td>Placeholder</td>
+                    <td>
+                        <ul>Placeholder1</ul>
+                        <ul>Placeholder2</ul>
+                    </td>
+                    <td>Placeholder</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Käyttäjät</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nimi</th>
+                <th>Liittymishetki</th>
+                <th>Lempiväri</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for kayttaja in kayttajat %}
+                <tr>
+                    <td><a href="{{base_path}}/kayttajat/{{kayttaja.kayttajaId}}">{{kayttaja.nimi}}</a></td>
+                    <td>{{kayttaja.liittymispaiva}}</td>
+                    <td>{{kayttaja.lempivari}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Tägit</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nimi</th>
+                <th>Viestit tällä tägillä</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Minun lempivärini on punainen</td>
-                <td><a>Abraham Lincoln</a></td>
-                <td>
-                    <ul class="list-unstyled">
-                        <li><a>Hyödyllinen</a></li>
-                        <li><a>Syvällinen</a></li>
-                    </ul>
-                </td>
-                <td><button class="btn btn-default">Muokkaa viestiä</button><button class="btn btn-danger">Poista viesti</button><button class="btn btn-default">Lisää tägi</button></td>
-            </tr>
-            <tr>
-                <td>Minun lempivärini ei ole vihreä</td>
-                <td><a>Abraham Lincoln</a></td>
-                <td>
-                    <ul class="list-unstyled">
-                        <li><a>Hyödyllinen</a></li>
-                        <li><a>Merkityksellinen</a></li>
-                    </ul>
-                </td>
-                <td><button class="btn btn-default">Muokkaa viestiä</button><button class="btn btn-danger">Poista viesti</button><button class="btn btn-default">Lisää tägi</button></td>
+                <td>Hyödyllinen</td>
+                <td>0</td>
             </tr>
         </tbody>
     </table>
-    <h2>Käyttäjät</h2>
-    <ul>
-        <li><a>Lempiväriekspertti</a></li>
-    </ul>
-    <h2>Tägit</h2>
-    <ul>
-        <li><a>Lempivärit</a></li>
-    </ul>
-    
+
+
 {% endblock %}

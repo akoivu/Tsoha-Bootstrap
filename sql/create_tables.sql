@@ -1,7 +1,9 @@
 CREATE TABLE Kayttaja(
-	kayttajaId SERIAL PRIMARY KEY,
+	kayttajaid SERIAL PRIMARY KEY,
 	nimi varchar(30) NOT NULL UNIQUE,
 	liittymispaiva timestamp,
+	lempivari varchar(20),
+	esittelyteksti varchar(300),
 	salasana varchar(50) NOT NULL
 );
 
@@ -11,19 +13,19 @@ CREATE TABLE Keskustelualue(
 );
 
 CREATE TABLE Tagi(
-	tagiId SERIAL PRIMARY KEY,
+	tagiid SERIAL PRIMARY KEY,
 	nimi varchar(10) NOT NULL
 );
 
 CREATE TABLE Viesti(
-	viestiId SERIAL PRIMARY KEY,
+	viestiid SERIAL PRIMARY KEY,
 	sisalto varchar(300),
 	lahetysaika timestamp,
-	kirjoittajaId INTEGER REFERENCES Kayttaja(kayttajaId),
-	keskustelualueId INTEGER REFERENCES Keskustelualue(keskustelualueId)
+	kirjoittajaid INTEGER REFERENCES Kayttaja(kayttajaId),
+	keskustelualueid INTEGER REFERENCES Keskustelualue(keskustelualueId)
 );
 
 CREATE TABLE Tagays(
-	viestiId INTEGER REFERENCES Viesti(viestiId),
-	tagiId INTEGER REFERENCES Tagi(tagiId)
+	viestiid INTEGER REFERENCES Viesti(viestiid),
+	tagiid INTEGER REFERENCES Tagi(tagiid)
 );
