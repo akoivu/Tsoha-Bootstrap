@@ -19,5 +19,5 @@ Yleisiä linkkejä:
 ## Kirjautumistiedot
 
 Toimivat tunnukset:
-Käyttäjänimi: Abraham Lincoln
-Salasana: straitpimpin
+* Käyttäjänimi: Abraham Lincoln
+* Salasana: straitpimpin
