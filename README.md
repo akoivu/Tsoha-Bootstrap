@@ -15,3 +15,9 @@ Yleisiä linkkejä:
 * [Kirjautuminen](http://koxantti.users.cs.helsinki.fi/KeskusteluFoorumi/kirjautuminen)
 * [Omien tietojen muokkaus](http://koxantti.users.cs.helsinki.fi/KeskusteluFoorumi/kayttajat/1/muokkaus)
 * [Esimerkki keskustelualueesta](http://koxantti.users.cs.helsinki.fi/KeskusteluFoorumi/alueet/1)
+
+## Kirjautumistiedot
+
+Toimivat tunnukset:
+Käyttäjänimi: Abraham Lincoln
+Salasana: straitpimpin
