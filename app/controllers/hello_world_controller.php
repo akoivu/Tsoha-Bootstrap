@@ -2,11 +2,6 @@
 
 class HelloWorldController extends BaseController {
 
-    public static function index() {
-        $keskustelualueet = Keskustelualue::all();
-        View::make('etusivu.html', array('keskustelualueet' => $keskustelualueet));
-    }
-
     public static function kayttaja($kayttajaId) {
         $kayttaja = Kayttaja::findId($kayttajaId);
         $viestit = Viesti::findMessageByKayttaja($kayttajaId);
@@ -24,18 +19,13 @@ class HelloWorldController extends BaseController {
         View::make('kirjautuminen.html');
     }
 
-    public static function tietojenMuokkaus($kayttajaId) {
-        $kayttaja = Kayttaja::findId($kayttajaId);
-        View::make('tietojenmuokkaus.html', array('kayttaja' => $kayttaja));
-    }
-
     public static function viestisivu($keskustelualueId) {
         $viestit = Viesti::findMessageByKeskustelualue($keskustelualueId);
         $keskustelualue = Keskustelualue::findId($keskustelualueId);
         View::make('viestisivu.html', array('viestit' => $viestit, 'keskustelualue' => $keskustelualue));
     }
 
-    public static function sandbox() {
+    public static function joku() {
         $keskustelualueet = Keskustelualue::all();
         Kint::dump($keskustelualueet);
     }
@@ -51,6 +41,25 @@ class HelloWorldController extends BaseController {
         $keskustelualue->save();
         
         Redirect::to('/alueet/' . $keskustelualue->keskustelualueId, array('message' => 'Uusi keskustelualue on syntynyt!'));
+    }
+    
+    public static function sandbox() {
+        $kayttaja = new Kayttaja(array(
+            'nimi' => 'Abrahvjhvjh',
+            'liittymispaiva' => date('d-m-Y H:i:s'),
+            'lempivari' => '',
+            'esittelyteksti' => '',
+            'admin' => FALSE,
+            'salasana' => 'nkbjjhbvjvh'
+        ));
+        
+        $errors = $kayttaja->errors();
+        
+        Kint::dump($errors);
+    }
+    
+    public static function etusivu() {
+        View::make('etusivu.html');
     }
 
 }

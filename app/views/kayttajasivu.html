@@ -1,26 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-    
-    <h1>{{kayttaja.nimi}}</h1>
-    
-    <dl>
-        <dt>Lempiväri</dt>
-        <dd>{{kayttaja.lempivari}}</dd>
-        <dt>Liittymisaika</dt>
-        <dd>{{kayttaja.liittymispaiva}}</dd>
-        <dt>Esittelyteksti</dt>
-        <dd>{{kayttaja.esittelyteksti}}</dd>
-    </dl>
-    <h2>Käyttäjän {{kayttaja.nimi}} viestit</h2>
-    <table class="table table-striped">
-        <tbody>
-            {% for viesti in viestit %}
-                <tr>
-                    <td>{{viesti.sisalto}}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <a href="{{base_path}}/kayttajat/{{kayttaja.kayttajaId}}/muokkaus">Muokkaa käyttäjätietoja</a>
+
+<h1>{{kayttaja.nimi}}</h1>
+
+<dl>
+    <dt>Lempiväri</dt>
+    <dd>{{kayttaja.lempivari}}</dd>
+    <dt>Liittymisaika</dt>
+    <dd>{{kayttaja.liittymispaiva}}</dd>
+    <dt>Esittelyteksti</dt>
+    <dd>{{kayttaja.esittelyteksti}}</dd>
+</dl>
+<h2>Käyttäjän {{kayttaja.nimi}} viestit</h2>
+<table class="table table-striped">
+    <tbody>
+        {% for viesti in viestit %}
+        <tr>
+            <td>{{viesti.sisalto}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if kayttaja.kayttajaId == user_logged_in.kayttajaId %}
+<form method="get" action="{{base_path}}/kayttajat/{{kayttaja.kayttajaId}}/muokkaus" style="display: inline-block;">
+    <button type="submit" class="btn btn-primary">Muokkaa</button>
+</form>
+<form method="post" action="{{base_path}}/kayttajat/{{kayttaja.kayttajaId}}/poista" style="display: inline-block;">
+    <button type="submit" class="btn btn-danger">Poista</button>
+</form>
+{% endif %}
 {% endblock %}

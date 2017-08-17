@@ -4,7 +4,8 @@ CREATE TABLE Kayttaja(
 	liittymispaiva timestamp,
 	lempivari varchar(20),
 	esittelyteksti varchar(300),
-	salasana varchar(50) NOT NULL
+	salasana varchar(50) NOT NULL,
+	admin BOOLEAN
 );
 
 CREATE TABLE Keskustelualue(

@@ -1,32 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Hakutulokset hakusanalla: {{hakusana}}</h1>
-<h2>Viestit</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Viesti</th>
-            <th>Nimimerkki</th>
-            <th>Tägit</th>
-            <th>Keskustelualue</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for viesti in viestit %}
-        <tr>
-            <td>{{viesti.sisalto}}</td>
-            <td>Placeholder</td>
-            <td>
-                <ul>Placeholder1</ul>
-                <ul>Placeholder2</ul>
-            </td>
-            <td>Placeholder</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<h2>Käyttäjät</h2>
 
+<h1>Käyttäjät</h1>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -37,6 +12,7 @@
             <th></th>
         </tr>
     </thead>
+
     <tbody>
         {% for kayttaja in kayttajat %}
         <tr>
@@ -53,26 +29,10 @@
                     <button type="submit" class="btn btn-danger">Poista</button>
                 </form>
                 {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<h2>Tägit</h2>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Nimi</th>
-            <th>Viestit tällä tägillä</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Hyödyllinen</td>
-            <td>0</td>
-        </tr>
-    </tbody>
-</table>
-
 
 {% endblock %}

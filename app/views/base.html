@@ -40,6 +40,12 @@
                     <ul class="nav navbar-nav">
                         <!-- Navigaation linkit -->
                         <li><a href="{{base_path}}">Etusivu</a></li>
+                        {% if user_logged_in %}
+                        <li><a href="{{base_path}}/kayttajat/{{user_logged_in.kayttajaId}}">{{user_logged_in.nimi}}</a></li>
+                        {% endif %}
+                        {% if not(user_logged_in) %}
+                        <li><a href="{{base_path}}/login">Kirjaudu sisään/Rekisteröidy</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 

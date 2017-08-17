@@ -1,7 +1,7 @@
 <?php
 
 $routes->get('/', function() {
-    HelloWorldController::index();
+    HelloWorldController::etusivu();
 });
 
 $routes->get('/kayttajat/:kayttajaId', function($kayttajaId) {
@@ -18,7 +18,11 @@ $routes->get('/kirjautuminen', function() {
 });
 
 $routes->get('/kayttajat/:kayttajaId/muokkaus', function($kayttajaId) {
-    HelloWorldController::tietojenMuokkaus($kayttajaId);
+    KayttajaController::tietojenMuokkaus($kayttajaId);
+});
+
+$routes->post('/kayttajat/:kayttajaId/muokkaus', function($kayttajaId){
+    KayttajaController::update($kayttajaId);
 });
 
 $routes->get('/alueet/:keskustelualueId', function($keskustelualueId) {
@@ -29,8 +33,34 @@ $routes->get('/hiekkalaatikko', function() {
     HelloWorldController::sandbox();
 });
 
-$routes->post('/alueet', function() {
-    HelloWorldController::store();
+$routes->get('/alueet', function(){
+    KeskustelualueController::etusivu();   
 });
 
+$routes->post('/alueet', function() {
+    KeskustelualueController::store();
+});
 
+$routes->get('/hiekkalaatikko', function() {
+    HelloWorldController::sandbox();
+});
+
+$routes->get('/login', function() {
+    KayttajaController::kirjautumissivu();
+}); 
+
+$routes->post('/login', function() {
+    KayttajaController::kirjautuminen();
+}); 
+
+$routes->post('/register', function() {
+    KayttajaController::store();
+});
+
+$routes->post('/kayttajat/:kayttajaId/poista', function($kayttajaId) {
+    KayttajaController::poista($kayttajaId);
+}); 
+
+$routes->get('/kayttajat', function() {
+    KayttajaController::kayttajat();
+});
