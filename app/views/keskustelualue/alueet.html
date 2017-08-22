@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+{% import "macros/forms.html" as forms %}
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if message %}
+<div class="alert alert-info">
+    {{message}}
+</div>
+{% endif %}
+
+<h1>Keskustelualueet</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Viestejä</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for keskustelualue in keskustelualueet %}
+        <tr>
+            <td><a href="{{base_path}}/alueet/{{keskustelualue.keskustelualueId}}">{{keskustelualue.nimi}}</a></td>
+            <td>{{keskustelualue.maara}}</td>
+            <td>
+                {% if user_logged_in.admin %}
+                {{forms.destroy_button("#{base_path}/alueet/#{keskustelualue.keskustelualueId}/poista")}}
+                <a href="{{base_path}}/alueet/{{keskustelualue.keskustelualueId}}/muokkaus" class="btn btn-default">Muokkaa</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2>Uusi keskustelualue</h2>
+
+<form method="post" action="{{base_path}}/alueet">
+    <div>
+        <label>Nimi</label>
+        <input type="text" name="nimi" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Lisää keskustelualue</button>
+</form>
+
+{% endblock %}

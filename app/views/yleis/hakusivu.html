@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "macros/forms.html" as forms %}
 <h1>Hakutulokset hakusanalla: {{hakusana}}</h1>
 <h2>Viestit</h2>
 <table class="table table-striped">
@@ -67,10 +68,11 @@
         </tr>
     </thead>
     <tbody>
+        {% for tagi in tagit %}
         <tr>
-            <td>Hyödyllinen</td>
-            <td>0</td>
+            <td><a href="{{base_path}}/tagit/{{tagi.id}}" class="btn btn-default">{{tagi.nimi}}</a></td>    
         </tr>
+        {% endfor %}
     </tbody>
 </table>
 

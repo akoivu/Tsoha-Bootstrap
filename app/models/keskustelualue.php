@@ -80,4 +80,14 @@ class Keskustelualue extends BaseModel {
         return $errors;
     }
 
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE Keskustelualue SET nimi = :nimi WHERE keskustelualueid = :keskustelualueid');
+        
+        $query->execute(array('nimi' => $this->nimi, 'keskustelualueid' => $this->keskustelualueId));
+    }
+    
+    public function poista() {
+        $query = DB::connection()->prepare('DELETE FROM Keskustelualue WHERE keskustelualueid = :keskustelualueid');
+        $query->execute(array('keskustelualueid' => $this->keskustelualueId));
+    }
 }

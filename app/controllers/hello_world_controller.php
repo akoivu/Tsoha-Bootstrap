@@ -1,65 +1,37 @@
 <?php
 
-class HelloWorldController extends BaseController {
+class YleisController extends BaseController {
 
     public static function kayttaja($kayttajaId) {
+        self::check_logged_in();
         $kayttaja = Kayttaja::findId($kayttajaId);
         $viestit = Viesti::findMessageByKayttaja($kayttajaId);
 
-        View::make('kayttajasivu.html', array('kayttaja' => $kayttaja, 'viestit' => $viestit));
+        View::make('kayttaja/kayttajasivu.html', array('kayttaja' => $kayttaja, 'viestit' => $viestit));
     }
 
     public static function hakusivu($hakusana) {
+        self::check_logged_in();
         $kayttajat = Kayttaja::findUserName($hakusana);
         $viestit = Viesti::findMessage($hakusana);
-        View::make('hakusivu.html', array('kayttajat' => $kayttajat, 'viestit' => $viestit, 'hakusana' => $hakusana));
-    }
-
-    public static function kirjautuminen() {
-        View::make('kirjautuminen.html');
+        $tagit = Tagi::findName($hakusana);
+        View::make('yleis/hakusivu.html', array('kayttajat' => $kayttajat, 'viestit' => $viestit, 'tagit' => $tagit, 'hakusana' => $hakusana));
     }
 
     public static function viestisivu($keskustelualueId) {
+        self::check_logged_in();
         $viestit = Viesti::findMessageByKeskustelualue($keskustelualueId);
         $keskustelualue = Keskustelualue::findId($keskustelualueId);
-        View::make('viestisivu.html', array('viestit' => $viestit, 'keskustelualue' => $keskustelualue));
-    }
-
-    public static function joku() {
-        $keskustelualueet = Keskustelualue::all();
-        Kint::dump($keskustelualueet);
-    }
-
-    public static function store() {
-        $rivi = $_POST;
-
-        $keskustelualue = new Keskustelualue(array(
-            'nimi' => $rivi['nimi'],
-            'maara' => 0
-        ));
-                
-        $keskustelualue->save();
-        
-        Redirect::to('/alueet/' . $keskustelualue->keskustelualueId, array('message' => 'Uusi keskustelualue on syntynyt!'));
+        View::make('viesti/viestisivu.html', array('viestit' => $viestit, 'keskustelualue' => $keskustelualue));
     }
     
     public static function sandbox() {
-        $kayttaja = new Kayttaja(array(
-            'nimi' => 'Abrahvjhvjh',
-            'liittymispaiva' => date('d-m-Y H:i:s'),
-            'lempivari' => '',
-            'esittelyteksti' => '',
-            'admin' => FALSE,
-            'salasana' => 'nkbjjhbvjvh'
-        ));
         
-        $errors = $kayttaja->errors();
-        
-        Kint::dump($errors);
     }
     
     public static function etusivu() {
-        View::make('etusivu.html');
+        self::check_logged_in();
+        View::make('yleis/etusivu.html');
     }
 
 }
