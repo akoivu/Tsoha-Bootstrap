@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+{% import "macros/forms.html" as formimacrot %}
+{% import "macros/viestit.html" as viestimacrot %}
+{{viestimacrot.virheet(virheet)}}
+{{viestimacrot.info(info)}}
+
+<form method="post" action="{{base_path}}/alueet/{{keskustelualue.keskustelualueId}}/{{viesti.viestiId}}/muokkaa">
+    <div class="form-group">
+        <label>Sisältö</label>
+        <textarea class="form-control" rows="3" name="sisalto">{{viesti.sisalto}}</textarea>
+    </div>    
+    {% if user_logged_in.admin %}
+    <div class="form-group">
+        <select class="form-control" name="tagit[]" multiple="">
+            {% for tagi in tagit %}
+            {% if tagi.tagiId in valmiit %}
+             <option value="{{tagi.tagiId}}" selected>{{tagi.nimi}}</option>
+            {% else %}
+            <option value="{{tagi.tagiId}}">{{tagi.nimi}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    {% endif %}
+    <a href="{{base_path}}/alueet/{{keskustelualue.keskustelualueId}}" class="btn btn-default">Peruuta</a><button type="submit" class="btn btn-success">Tallenna</button>
+</form>
+{% endblock %}

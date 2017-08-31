@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "macros/forms.html" as formimacrot %}
+{% import "macros/viestit.html" as viestimacrot %}
+{{viestimacrot.virheet(virheet)}}
+{{viestimacrot.info(info)}}
 
 <h1>{{kayttaja.nimi}}</h1>
+<a href="{{base_path}}/">Takaisin etusivulle</a>
 
 <dl>
     <dt>Lempiväri</dt>
@@ -11,16 +16,6 @@
     <dt>Esittelyteksti</dt>
     <dd>{{kayttaja.esittelyteksti}}</dd>
 </dl>
-<h2>Käyttäjän {{kayttaja.nimi}} viestit</h2>
-<table class="table table-striped">
-    <tbody>
-        {% for viesti in viestit %}
-        <tr>
-            <td>{{viesti.sisalto}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 {% if kayttaja.kayttajaId == user_logged_in.kayttajaId %}
 <form method="get" action="{{base_path}}/kayttajat/{{kayttaja.kayttajaId}}/muokkaus" style="display: inline-block;">
     <button type="submit" class="btn btn-primary">Muokkaa</button>
@@ -29,4 +24,30 @@
     <button type="submit" class="btn btn-danger">Poista</button>
 </form>
 {% endif %}
+<h2>Käyttäjän {{kayttaja.nimi}} viestit</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Viesti</th>
+            <th>Lähetysaika</th>
+            <th>Keskustelualue</th>
+            <th>Tägit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for viesti in viestit %}
+        <tr>
+            <td>{{viesti.sisalto}}</td>
+            <td>{{viesti.lahetysaika}}</td>
+            <td><a href="{{base_path}}/alueet/{{viesti.keskustelualueId}}">{{viesti.keskustelualue}}</a></td>
+            <td>
+                {% for tagi in viesti.tagit %}
+                <a href="{{base_path}}/tagit/{{tagi.tagiId}}" class="btn btn-primary">{{tagi.nimi}}</a>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}

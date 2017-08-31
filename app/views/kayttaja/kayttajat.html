@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "macros/forms.html" as formimacrot %}
+{% import "macros/viestit.html" as viestimacrot %}
+{{viestimacrot.virheet(virheet)}}
+{{viestimacrot.info(info)}}
 
 <h1>Käyttäjät</h1>
+<a href="{{base_path}}/">Takaisin etusivulle</a>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -25,9 +30,7 @@
                 <form method="get" action="{{base_path}}/kayttajat/{{kayttaja.kayttajaId}}/muokkaus" style="display: inline-block;">
                     <button type="submit" class="btn btn-primary">Muokkaa</button>
                 </form>
-                <form method="post" action="{{base_path}}/kayttajat/{{kayttaja.kayttajaId}}/poista" style="display: inline-block;">
-                    <button type="submit" class="btn btn-danger">Poista</button>
-                </form>
+                {{formimacrot.destroy_button("#{base_path}/kayttajat/#{kayttaja.kayttajaId}/poista")}}
                 {% endif %}
             </td>
         </tr>

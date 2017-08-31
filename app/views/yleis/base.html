@@ -44,19 +44,22 @@
                         <li><a href="{{base_path}}/kayttajat/{{user_logged_in.kayttajaId}}">{{user_logged_in.nimi}}</a></li>
                         <li><a href="{{base_path}}/logout">Kirjaudu ulos</a></li>
                         {% endif %}
+                        <li>
+                            <div class="row">
+                                <form method="get" action="{{base_path}}/haku">
+                                    <div class="col-xs-6">
+                                        <input type="text" name="name" class="form-control" placeholder="Haku">
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <button type="submit" class="btn btn-primary">Hae</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
                     </ul>
                 </div>
-                
-                <div class="collapse navbar-collapse">
-                    <form method="get" action="{{base_path}}/haku">
-                        <div class="form-group ">
-                            <input type="text" name="name" class="form-control" placeholder="Haku">
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-primary">Hae</button>
-                        </div>
-                    </form>
-                </div>
+
+
             </div>
         </nav>
 

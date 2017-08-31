@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Tägin {{tamatagi.nimi}} viestit</h1>
+<a href="{{base_path}}/">Takaisin etusivulle</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Viesti</th>
+            <th>Lähetysaika</th>
+            <th>Keskustelualue</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for viesti in viestit %}
+        <tr>
+            <td>{{viesti.sisalto}}</td>
+            <td>{{viesti.lahetysaika}}</td>
+            <td><a href="{{base_path}}/alueet/{{viesti.keskustelualueId}}">{{viesti.keskustelualue}}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

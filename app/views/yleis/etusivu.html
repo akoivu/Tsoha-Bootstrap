@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "macros/forms.html" as formimacrot %}
+{% import "macros/viestit.html" as viestimacrot %}
+{{viestimacrot.virheet(virheet)}}
+{{viestimacrot.info(info)}}
 
 <h1>Etusivu</h1>
 <h2>Hei, ja tervetuloa keskustelufoorumille!</h2>

@@ -7,22 +7,22 @@ class KayttajaController extends BaseController {
     }
     
     public static function kirjautuminen() {
-        $params = $_POST;
+        $parametrit = $_POST;
         
-        $kayttaja = Kayttaja::authenticate($params['nimi'], $params['salasana']);
+        $kayttaja = Kayttaja::authenticate($parametrit['nimi'], $parametrit['salasana']);
         
         if(!$kayttaja) {
-            View::make('yleis/kirjautuminen.html', array('error' => 'Väärä käyttäjänimi ja/tai salasana.', 'nimi' => $params['nimi']));
+            View::make('yleis/kirjautuminen.html', array('virheet' => array('Väärä käyttäjänimi ja/tai salasana.'), 'nimi' => $parametrit['nimi']));
         } else {
             $_SESSION['user'] = $kayttaja->kayttajaId;
-            Redirect::to('/', array('message' => 'Olet onnistuneesti kirjautunut sisään.'));
+            Redirect::to('/', array('info' => 'Olet onnistuneesti kirjautunut sisään.'));
         }
     }
     
     public static function store() {
         $rivi = $_POST;
         
-        $attributes = array(
+        $attribuutit = array(
             'nimi' => $rivi['nimiuusi'],
             'liittymispaiva' => date('d-m-Y H:i:s'),
             'lempivari' => '',
@@ -31,24 +31,22 @@ class KayttajaController extends BaseController {
             'admin' => 'FALSE'
         );
         
-        $kayttaja = new Kayttaja($attributes);
+        $kayttaja = new Kayttaja($attribuutit);
         
-        $errors = $kayttaja->errors();
+        $virheet = array_merge($kayttaja->errors(), $kayttaja->validate_uniikkius());
         
-        $errors = array_merge($errors, $kayttaja->validate_nimi());
-        
-        if(count($errors) == 0) {
-            $kayttaja->save();
+        if(count($virheet) == 0) {
+            $kayttaja->tallenna();
             $_SESSION['user'] = $kayttaja->kayttajaId;
-            Redirect::to('/kayttajat/' . $kayttaja->kayttajaId, array('message' => 'Rekisteröityminen onnistui. Muista lisätä lempivärisi ja esittelytekstisi halutessasi.'));
+            Redirect::to('/kayttajat/' . $kayttaja->kayttajaId, array('info' => 'Rekisteröityminen onnistui. Muista lisätä lempivärisi ja esittelytekstisi halutessasi.'));
         } else {
-            View::make('yleis/kirjautuminen.html', array('errors' => $errors));
+            View::make('yleis/kirjautuminen.html', array('virheet' => $virheet));
         }
     }
     
     public static function tietojenMuokkaus($kayttajaId) {
         self::check_logged_in();
-        $kayttaja = Kayttaja::findId($kayttajaId);
+        $kayttaja = Kayttaja::idEtsinta($kayttajaId);
         View::make('kayttaja/tietojenmuokkaus.html', array('kayttaja' => $kayttaja));
     }
     
@@ -56,7 +54,7 @@ class KayttajaController extends BaseController {
         self::check_logged_in();
         $rivi = $_POST;
         
-        $vanha = Kayttaja::findId($kayttajaId);
+        $vanha = Kayttaja::idEtsinta($kayttajaId);
         
         $attributes = array(
             'kayttajaId' => $kayttajaId,
@@ -70,13 +68,13 @@ class KayttajaController extends BaseController {
         
         $uusi = new Kayttaja($attributes);
         
-        $errors = $uusi->errors();
+        $virheet = $uusi->errors();
                         
-        if(count($errors) > 0) {
-            View::make('kayttaja/tietojenmuokkaus.html', array('errors' => $errors, 'kayttaja' => $uusi));
+        if(count($virheet) > 0) {
+            View::make('kayttaja/tietojenmuokkaus.html', array('virheet' => $virheet, 'kayttaja' => $uusi));
         } else {
-            $uusi->update();
-            Redirect::to('/kayttajat/' . $uusi->kayttajaId, array('message' => 'Tiedot on päivitetty'));
+            $uusi->paivita();
+            Redirect::to('/kayttajat/' . $uusi->kayttajaId, array('info' => 'Tiedot on päivitetty'));
         }
     }
     
@@ -86,26 +84,27 @@ class KayttajaController extends BaseController {
         
         $kayttaja->poista();
         
-        Redirect::to('/', array('message' => 'Käyttäjä poistettu'));
+        Redirect::to('/login', array('info' => 'Käyttäjä poistettu'));
     }
     
     public static function kayttajat() {
         self::check_logged_in();
-        $kayttajat = Kayttaja::all();
+        $kayttajat = Kayttaja::listaaKaikki();
         
-        View::make('kayttajat.html', array('kayttajat' => $kayttajat));
+        View::make('kayttaja/kayttajat.html', array('kayttajat' => $kayttajat));
     }
     
     public static function kayttaja($kayttajaId) {
         self::check_logged_in();
-        $kayttaja = Kayttaja::findId($kayttajaId);
-        $viestit = Viesti::findMessageByKayttaja($kayttajaId);
+        $kayttaja = Kayttaja::idEtsinta($kayttajaId);
+        $viestit = Viesti::etsiKayttajanViestit($kayttajaId);
 
         View::make('kayttaja/kayttajasivu.html', array('kayttaja' => $kayttaja, 'viestit' => $viestit));
     }
     
     public static function uloskirjautuminen() {
+        self::check_logged_in();
         $_SESSION['user'] = null;
-        Redirect::to('/login', array('message' => 'Olet kirjautunut ulos!'));
+        Redirect::to('/login', array('info' => 'Olet kirjautunut ulos!'));
     }
 }

@@ -6,7 +6,7 @@ class BaseController {
         if(isset($_SESSION['user'])) {
             $kayttajaId = $_SESSION['user'];
             
-            $kayttaja = Kayttaja::findId($kayttajaId);
+            $kayttaja = Kayttaja::idEtsinta($kayttajaId);
             
             return $kayttaja;
         }

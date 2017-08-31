@@ -15,7 +15,7 @@ CREATE TABLE Keskustelualue(
 
 CREATE TABLE Tagi(
 	tagiid SERIAL PRIMARY KEY,
-	nimi varchar(10) NOT NULL
+	nimi varchar(20) NOT NULL
 );
 
 CREATE TABLE Viesti(

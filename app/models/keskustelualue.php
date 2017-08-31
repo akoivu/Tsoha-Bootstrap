@@ -9,7 +9,7 @@ class Keskustelualue extends BaseModel {
         $this->validators = array('validate_nimi');
     }
 
-    public static function all() {
+    public static function listaaKaikki() {
         $query = DB::connection()->prepare('SELECT * FROM Keskustelualue');
 
         $query->execute();
@@ -29,7 +29,7 @@ class Keskustelualue extends BaseModel {
         return $keskustelualueet;
     }
 
-    public static function findId($keskustelualueId) {
+    public static function idEtsinta($keskustelualueId) {
         $query = DB::connection()->prepare('SELECT * FROM Keskustelualue WHERE keskustelualueid = :keskustelualueId LIMIT 1');
         $query->execute(array('keskustelualueId' => $keskustelualueId));
 
@@ -50,7 +50,7 @@ class Keskustelualue extends BaseModel {
         return null;
     }
 
-    public function save() {
+    public function tallenna() {
         $query = DB::connection()->prepare('INSERT INTO Keskustelualue (nimi) VALUES (:nimi) RETURNING keskustelualueid');
         $query->execute(array('nimi' => $this->nimi));
 
@@ -76,17 +76,25 @@ class Keskustelualue extends BaseModel {
         if (strlen($this->nimi) < 2) {
             $errors[] = 'Nimen täytyy olla vähintään kahden merkin pituinen.';
         }
+        if(strlen($this->nimi) > 40) {
+            $errors[] = 'Nimi voi olla enintään 40 merkkiä pitkä.';
+        }
 
         return $errors;
     }
 
-    public function update() {
+    public function paivita() {
         $query = DB::connection()->prepare('UPDATE Keskustelualue SET nimi = :nimi WHERE keskustelualueid = :keskustelualueid');
         
         $query->execute(array('nimi' => $this->nimi, 'keskustelualueid' => $this->keskustelualueId));
     }
     
     public function poista() {
+        $tagayspoisto = DB::connection()->prepare('DELETE FROM Tagays WHERE viestiid IN ('
+                . 'SELECT viestiid FROM Viesti WHERE keskustelualueid = :keskustelualueid)');
+        $tagayspoisto->execute(array('keskustelualueid' => $this->keskustelualueId));
+        $viestipoisto = DB::connection()->prepare('DELETE FROM Viesti WHERE keskustelualueid = :keskustelualueid');
+        $viestipoisto->execute(array('keskustelualueid' => $this->keskustelualueId));
         $query = DB::connection()->prepare('DELETE FROM Keskustelualue WHERE keskustelualueid = :keskustelualueid');
         $query->execute(array('keskustelualueid' => $this->keskustelualueId));
     }

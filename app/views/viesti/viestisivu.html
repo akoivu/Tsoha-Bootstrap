@@ -1,39 +1,68 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "macros/forms.html" as formimacrot %}
+{% import "macros/viestit.html" as viestimacrot %}
+{{viestimacrot.virheet(virheet)}}
+{{viestimacrot.info(info)}}
 
-    <h1>{{keskustelualue.nimi}}</h1>
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Viesti</th>
-                <th>Nimimerkki</th>
-                <th>Tägit</th>
-                <th></th>
-            </tr>
-        </thead>
-
-        <tbody>
-            {% for viesti in viestit %}}
-            <tr>
-                <td>{{viesti.sisalto}}</td>
-                <td>Placeholder</td>
-                <td>
-                    <ul>
-                        <li>Placeholder1</li>
-                        <li>Placeholder2</li>
-                    </ul>
-                </td>
-            </tr>
+<h1>{{keskustelualue.nimi}}</h1>
+<a href="{{base_path}}/alueet">Takaisin keskustelualuelistaukseen</a>
+<form method="post" action="{{base_path}}/alueet/{{keskustelualue.keskustelualueId}}">
+    <label>Älä näytä seuraavilla tägeillä merkittyjä viestejä</label>
+    <div class="form-group">
+        <select class="form-control" name="eitagit[]" multiple="">
+            {% for tagi in tagit %}
+            <option value="{{tagi.tagiId}}">{{tagi.nimi}}</option>
             {% endfor %}
-        </tbody>
-    </table>
-    <h2>Uusi viesti</h2>
+        </select>
+    </div>
+    <input type="hidden" value="filter" name="toiminto">
+    <button type="submit" class="btn btn-primary">Filtteröi</button>
+</form>
 
-    <form>
-        <div>
-            <textarea class="form-control" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Lähetä viesti</button>
-    </form>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Viesti</th>
+            <th>Nimimerkki</th>
+            <th>Tägit</th>
+            <th>Lähetysaika</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for viesti in viestit %}
+        <tr>
+            <td>{{viesti.sisalto}}</td>
+            <td><a href="{{base_path}}/kayttajat{{viesti.kirjoittajaId}}">{{viesti.kirjoittaja}}</a></td>
+            <td>
+                <ul>
+                    {% for tagi in viesti.tagit %}
+                    <a href="{{base_path}}/tagit/{{tagi.tagiId}}" class="btn btn-primary">{{tagi.nimi}}</a>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>{{viesti.lahetysaika}}</td>
+            <td>
+                {% if user_logged_in.admin or user_logged_in.kayttajaId == viesti.kirjoittajaId %}
+                <a href="{{base_path}}/alueet/{{keskustelualue.keskustelualueId}}/{{viesti.viestiId}}/muokkaa" class="btn btn-warning">Muokkaa</a>
+                {{formimacrot.destroy_button("#{base_path}/alueet/#{keskustelualue.keskustelualueId}/#{viesti.viestiId}/poista")}}
+                {% endif %}
+            </td>         
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2>Uusi viesti</h2>
+
+<form method="post" action="{{base_path}}/alueet/{{keskustelualue.keskustelualueId}}">
+    <div>
+        <textarea class="form-control" rows="3" name="sisalto"></textarea>
+    </div>
+    <input type="hidden" value="{{keskustelualue.keskustelualueId}}" name="keskustelualueId">
+    <input type="hidden" value="{{user_logged_in.kayttajaId}}" name="kayttajaId">
+    <input type="hidden" value="uusi" name="toiminto">
+    <button type="submit" class="btn btn-primary">Lähetä viesti</button>
+</form>
 {% endblock %}

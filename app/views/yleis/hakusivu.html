@@ -1,34 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
-{% import "macros/forms.html" as forms %}
+{% import "macros/forms.html" as formimacrot %}
+{% import "macros/viestit.html" as viestimacrot %}
+{{viestimacrot.virheet(virheet)}}
+{{viestimacrot.info(info)}}
 <h1>Hakutulokset hakusanalla: {{hakusana}}</h1>
+<a href="{{base_path}}/">Takaisin etusivulle</a>
 <h2>Viestit</h2>
-<table class="table table-striped">
+<table class="table">
     <thead>
         <tr>
             <th>Viesti</th>
-            <th>Nimimerkki</th>
-            <th>Tägit</th>
+            <th>Lähetysaika</th>
             <th>Keskustelualue</th>
+            <th>Tägit</th>
         </tr>
     </thead>
     <tbody>
         {% for viesti in viestit %}
         <tr>
             <td>{{viesti.sisalto}}</td>
-            <td>Placeholder</td>
+            <td>{{viesti.lahetysaika}}</td>
+            <td><a href="{{base_path}}/alueet/{{viesti.keskustelualueId}}">{{viesti.keskustelualue}}</a></td>
             <td>
-                <ul>Placeholder1</ul>
-                <ul>Placeholder2</ul>
+                {% for tagi in viesti.tagit %}
+                <a href="{{base_path}}/tagit/{{tagi.tagiId}}" class="btn btn-primary">{{tagi.nimi}}</a>
+                {% endfor %}
             </td>
-            <td>Placeholder</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 <h2>Käyttäjät</h2>
 
-<table class="table table-striped">
+<table class="table">
     <thead>
         <tr>
             <th>Nimi</th>
@@ -60,17 +65,16 @@
 </table>
 <h2>Tägit</h2>
 
-<table class="table table-striped">
+<table class="table">
     <thead>
         <tr>
             <th>Nimi</th>
-            <th>Viestit tällä tägillä</th>
         </tr>
     </thead>
     <tbody>
         {% for tagi in tagit %}
         <tr>
-            <td><a href="{{base_path}}/tagit/{{tagi.id}}" class="btn btn-default">{{tagi.nimi}}</a></td>    
+            <td><a href="{{base_path}}/tagit/{{tagi.tagiId}}" class="btn btn-default">{{tagi.nimi}}</a></td>    
         </tr>
         {% endfor %}
     </tbody>

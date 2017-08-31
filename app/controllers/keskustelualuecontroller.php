@@ -4,68 +4,70 @@ class KeskustelualueController extends BaseController {
 
     public static function etusivu() {
         self::check_logged_in();
-        $keskustelualueet = Keskustelualue::all();
+        $keskustelualueet = Keskustelualue::listaaKaikki();
         View::make('keskustelualue/alueet.html', array('keskustelualueet' => $keskustelualueet));
     }
 
-    public static function store() {
+    public static function uusiKeskustelualue() {
         self::check_logged_in();
         $rivi = $_POST;
 
-        $attributes = array(
+        $attribuutit = array(
             'nimi' => $rivi['nimi'],
             'maara' => 0
         );
 
-        $keskustelualue = new Keskustelualue($attributes);
+        $keskustelualue = new Keskustelualue($attribuutit);
 
-        $errors = $keskustelualue->errors();
+        $virheet = $keskustelualue->errors();
         
-        if (count($errors) == 0) {
-            $keskustelualue->save();
+        if (count($virheet) == 0) {
+            $keskustelualue->tallenna();
             
-            Redirect::to('/alueet/' . $keskustelualue->keskustelualueId, array('message' => 'Uusi keskustelualue on syntynyt!'));
+            Redirect::to('/alueet/' . $keskustelualue->keskustelualueId, array('info' => 'Uusi keskustelualue on syntynyt!'));
         } else {
-            $keskustelualueet = Keskustelualue::all();
-            View::make('keskustelualue/alueet.html', array('errors' => $errors, 'attributes' => $attributes, 'keskustelualueet' => $keskustelualueet));
+            $keskustelualueet = Keskustelualue::listaaKaikki();
+            View::make('keskustelualue/alueet.html', array('virheet' => $virheet, 'attributes' => $attribuutit, 'keskustelualueet' => $keskustelualueet));
         }
     }
 
     public static function update($keskustelualueId) {
-        
+        self::check_logged_in();
         
         $rivi = $_POST;
         
-        $maara = Keskustelualue::findId($keskustelualueId)->maara;
+        $maara = Keskustelualue::idEtsinta($keskustelualueId)->maara;
         
-        $attributes = array(
+        $attribuutit = array(
             'keskustelualueId' => $keskustelualueId,
             'nimi' => $rivi['nimi'],
             'maara' => $maara
         );
         
-        $uusi = new Keskustelualue($attributes);
+        $uusi = new Keskustelualue($attribuutit);
         
-        $errors = $uusi->errors();
+        $virheet = $uusi->errors();
         
         
-        if(count($errors) > 0) {
-            View::make('keskustelualue/muokkaus', array('errors' => $errors));
+        if(count($virheet) > 0) {
+            View::make('keskustelualue/muokkaus', array('virheet' => $virheet));
         } else {
-            $uusi->update();
-            Redirect::to('/alueet', array('message' => 'Keskustelualueen muokkaaminen onnistui'));
+            $uusi->paivita();
+            Redirect::to('/alueet', array('info' => 'Keskustelualueen muokkaaminen onnistui'));
         }
     }
     
     public static function tietojenmuokkaus($keskustelualueId) {
-        $keskustelualue = Keskustelualue::findId($keskustelualueId);
+        self::check_logged_in();
+        $keskustelualue = Keskustelualue::idEtsinta($keskustelualueId);
         View::make('keskustelualue/muokkaus.html', array('keskustelualue' => $keskustelualue));
     }
     
     public static function poista($keskustelualueId) {
-        $keskustelualue = Keskustelualue::findId($keskustelualueId);
+        self::check_logged_in();
+        $keskustelualue = Keskustelualue::idEtsinta($keskustelualueId);
         
         $keskustelualue->poista();
-        Redirect::to('/alueet', array('message' => 'Keskustelualue poistettu'));
+        Redirect::to('/alueet', array('info' => 'Keskustelualue poistettu'));
     }
 }

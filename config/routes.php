@@ -1,46 +1,20 @@
 <?php
 
+//OletusController-polut
 $routes->get('/', function() {
-    YleisController::etusivu();
-});
-
-$routes->get('/kayttajat/:kayttajaId', function($kayttajaId) {
-    KayttajaController::kayttaja($kayttajaId);
+    OletusController::etusivu();
 });
 
 $routes->get('/haku', function() {
     $hakusana = $_REQUEST['name'];
-    YleisController::hakusivu($hakusana);
-});
-
-$routes->get('/kayttajat/:kayttajaId/muokkaus', function($kayttajaId) {
-    KayttajaController::tietojenMuokkaus($kayttajaId);
-});
-
-$routes->post('/kayttajat/:kayttajaId/muokkaus', function($kayttajaId){
-    KayttajaController::update($kayttajaId);
-});
-
-$routes->get('/alueet/:keskustelualueId', function($keskustelualueId) {
-    YleisController::viestisivu($keskustelualueId);
+    OletusController::hakusivu($hakusana);
 });
 
 $routes->get('/hiekkalaatikko', function() {
-    YleisController::sandbox();
+    OletusController::sandbox();
 });
 
-$routes->get('/alueet', function(){
-    KeskustelualueController::etusivu();   
-});
-
-$routes->post('/alueet', function() {
-    KeskustelualueController::store();
-});
-
-$routes->get('/hiekkalaatikko', function() {
-    YleisController::sandbox();
-});
-
+//KayttajaController-polut
 $routes->get('/login', function() {
     KayttajaController::kirjautumissivu();
 }); 
@@ -65,6 +39,19 @@ $routes->get('/logout', function() {
     KayttajaController::uloskirjautuminen();
 });
 
+$routes->get('/kayttajat/:kayttajaId', function($kayttajaId) {
+    KayttajaController::kayttaja($kayttajaId);
+});
+
+$routes->get('/kayttajat/:kayttajaId/muokkaus', function($kayttajaId) {
+    KayttajaController::tietojenMuokkaus($kayttajaId);
+});
+
+$routes->post('/kayttajat/:kayttajaId/muokkaus', function($kayttajaId){
+    KayttajaController::update($kayttajaId);
+});
+
+//KeskustelualueController-polut
 $routes->get('/alueet/:keskustelualueId/muokkaus', function($keskustelualueId){
     KeskustelualueController::tietojenmuokkaus($keskustelualueId);
 });
@@ -75,5 +62,42 @@ $routes->post('/alueet/:keskustelualueId/muokkaus', function($keskustelualueId) 
 
 $routes->post('/alueet/:keskustelualueId/poista', function($keskustelualueId) {
     KeskustelualueController::poista($keskustelualueId);
+});
+
+$routes->post('/alueet', function() {
+    KeskustelualueController::uusiKeskustelualue();
+});
+
+$routes->get('/alueet', function(){
+    KeskustelualueController::etusivu();   
+});
+
+//ViestiController-polut
+$routes->post('/alueet/:keskustelualueId', function($keskustelualueId) {
+    if($_POST['toiminto'] == 'uusi') {
+        ViestiController::uusiViesti($keskustelualueId);
+    } else if($_POST['toiminto'] == 'filter'){
+        ViestiController::viestiSivuFiltterilla($keskustelualueId);
+    }
+});
+
+$routes->get('/alueet/:keskustelualueId/:viestiId/muokkaa', function($keskustelualueId, $viestiId) {
+    ViestiController::muokkausnakyma($keskustelualueId, $viestiId);
+});
+
+$routes->post('/alueet/:keskustelualueId/:viestiId/muokkaa', function($keskustelualueId, $viestiId) {
+    ViestiController::muokkaaViestia($keskustelualueId, $viestiId);
+});
+
+$routes->post('/alueet/:keskustelualueId/:viestiId/poista', function($keskustelualueId, $viestiId) {
+    ViestiController::poista($keskustelualueId, $viestiId);
+});
+
+$routes->get('/alueet/:keskustelualueId', function($keskustelualueId) {
+    ViestiController::viestisivu($keskustelualueId);
+});
+
+$routes->get('/tagit/:tagiId', function($tagiId) {
+    TagiController::naytaTaginViestit($tagiId);
 });
 

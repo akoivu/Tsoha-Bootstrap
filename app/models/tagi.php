@@ -2,13 +2,13 @@
 
 class Tagi extends BaseModel {
     
-    public $id, $nimi, $viestit;
+    public $tagiId, $nimi, $viestit;
     
     public function __construct($attributes) {
         parent::__construct($attributes);
     }
     
-    public static function all() {
+    public static function listaaKaikki() {
         $query = DB::connection()->prepare('SELECT * FROM Tagi');
         $query->execute();
         $rivit = $query->fetchAll();
@@ -17,7 +17,7 @@ class Tagi extends BaseModel {
         
         foreach ($rivit as $rivi) {
             $tagit[] = new Tagi(array(
-                'id' => $rivi['tagiid'],
+                'tagiId' => $rivi['tagiid'],
                 'nimi' => $rivi['nimi']
             ));        
         }
@@ -25,7 +25,7 @@ class Tagi extends BaseModel {
         return $tagit;
     }
     
-    public static function findName($nimi) {
+    public static function etsiNimella($nimi) {
         $query = DB::connection()->prepare('SELECT * FROM Tagi WHERE nimi LIKE ?');
         $params = array('%' . $nimi . '%');
         $query->execute($params);
@@ -36,11 +36,29 @@ class Tagi extends BaseModel {
         
         foreach ($rivit as $rivi) {
             $tagit[] = new Tagi(array(
-                'id' => $rivi['tagiid'],
+                'tagiId' => $rivi['tagiid'],
                 'nimi' => $rivi['nimi']
             ));        
         }
         
         return $tagit;
+    }
+    
+    public static function idEtsinta($tagiId) {
+        $kysely = DB::connection()->prepare('SELECT * FROM Tagi WHERE tagiid = :tagiid LIMIT 1');
+        $kysely->execute(array('tagiid' => $tagiId));
+        
+        $rivi = $kysely->fetch();
+        
+        if($rivi) {
+            $tagi = new Tagi(array(
+                'tagiId' => $rivi['tagiid'],
+                'nimi' => $rivi['nimi']
+            ));
+            
+            return $tagi;
+        }
+        
+        return null;
     }
 }
