@@ -35,7 +35,7 @@
         {% for viesti in viestit %}
         <tr>
             <td>{{viesti.sisalto}}</td>
-            <td><a href="{{base_path}}/kayttajat{{viesti.kirjoittajaId}}">{{viesti.kirjoittaja}}</a></td>
+            <td><a href="{{base_path}}/kayttajat/{{viesti.kirjoittajaId}}">{{viesti.kirjoittaja}}</a></td>
             <td>
                 <ul>
                     {% for tagi in viesti.tagit %}
